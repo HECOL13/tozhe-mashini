@@ -3,16 +3,19 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Турнирная гонка</title>
+<title>Race Board</title>
 
 <style>
   :root{
-    --bg:#060616;
+    --bg:#050514;
     --panel:#0b0b22;
-    --panel2:#070717;
-    --stroke:rgba(140,120,255,.55);
-    --muted:#a9a9d6;
-    --text:#e9e9ff;
+    --panel2:#07071a;
+    --stroke:rgba(140,120,255,.35);
+    --text:#eef0ff;
+    --muted:rgba(255,255,255,.55);
+
+    --orange:#ff8c28;
+    --orange2:#ff6a00;
     --gold:#ffcf4a;
     --gridLine:rgba(255,255,255,.08);
   }
@@ -28,7 +31,6 @@
 
   .frame{
     min-height:100vh;
-    height:auto;
     padding:16px;
     display:flex;
     align-items:flex-start;
@@ -37,12 +39,14 @@
 
   .board{
     width:min(1280px, 96vw);
-    height:auto;
     min-height:720px;
     background: linear-gradient(#09091a, #060615);
     border-radius:26px;
     border:3px solid var(--stroke);
-    box-shadow: 0 0 0 2px rgba(70,60,130,.55) inset, 0 22px 70px rgba(0,0,0,.55), 0 0 46px rgba(132,110,255,.18);
+    box-shadow:
+      0 0 0 2px rgba(70,60,130,.55) inset,
+      0 22px 70px rgba(0,0,0,.55),
+      0 0 46px rgba(132,110,255,.18);
     position:relative;
     overflow:hidden;
     isolation:isolate;
@@ -58,9 +62,8 @@
 
   .layout{
     display:grid;
-    grid-template-columns: 290px 1fr;
+    grid-template-columns: 310px 1fr;
     gap:14px;
-    height:auto;
     padding:16px;
   }
 
@@ -90,14 +93,7 @@
   .cup{
     width:18px;height:18px; border-radius:6px;
     background: linear-gradient(#ffd36b, #c28b17);
-    box-shadow: 0 0 12px rgba(255,210,90,.25);
-  }
-
-  .trophyIcon{
-    width:34px;
-    height:34px;
-    filter: drop-shadow(0 0 12px rgba(255,210,90,.25));
-    flex:none;
+    box-shadow: 0 0 16px rgba(255,210,90,.35);
   }
 
   .winner{
@@ -117,45 +113,35 @@
     display:flex;
     flex-direction:column;
     gap:8px;
-    flex:0;
-    overflow:visible;
   }
 
   .thead{
     display:grid;
-    grid-template-columns: 1fr 86px;
-    padding:10px 10px;
+    grid-template-columns: 1fr 96px;
+    padding:8px 10px;
     color:var(--muted);
-    font-size:13px;
+    font-size:12px;
     font-weight:1000;
-    letter-spacing:.8px;
-    text-transform:uppercase;
+    letter-spacing:.6px;
   }
 
   .row{
     display:grid;
-    grid-template-columns: 1fr 86px;
+    grid-template-columns: 1fr 96px;
     align-items:center;
-    padding:12px 10px;
-    border-radius:14px;
-    background: linear-gradient(180deg, rgba(30,30,55,.55), rgba(18,18,35,.55));
+    padding:14px 14px;
+    border-radius:18px;
+    background: linear-gradient(180deg, rgba(30,30,55,.65), rgba(18,18,35,.65));
     border:1px solid rgba(140,120,255,.25);
-    position:relative;
-    overflow:hidden;
   }
 
   .country{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:1000;
+    display:flex; align-items:center; gap:12px; font-weight:1000;
+    min-width:0;
   }
 
-  /* ✅ Флаги в ТОП-таблице сделали больше */
   .flagImg{
-    width:50px;
-    height:50px;
-    border-radius:50%;
+    width:26px;height:26px;border-radius:50%;
     border:2px solid rgba(255,255,255,.18);
     box-shadow: 0 0 0 2px rgba(0,0,0,.35) inset;
     object-fit:cover;
@@ -163,49 +149,42 @@
     flex:none;
   }
 
+  .flagImg.big{
+    width:56px;
+    height:56px;
+    border-radius:18px;
+    border:3px solid rgba(255,255,255,.18);
+    box-shadow:
+      0 12px 26px rgba(0,0,0,.55),
+      0 0 24px rgba(255,210,90,.18);
+  }
+
   .wins{
     justify-self:end;
     font-weight:1000;
-    font-size:18px;
-    width:54px;
+    font-size:22px;
+    min-width:78px;
     text-align:center;
-    padding:7px 0;
-    border-radius:12px;
-    border:2px solid rgba(255,210,90,.35);
-    background: rgba(10,10,20,.55);
+    padding:10px 0;
+    border-radius:16px;
+    border:2px solid rgba(255,140,40,.65);
+    background: rgba(255,140,40,.18);
+    box-shadow: 0 0 18px rgba(255,140,40,.35);
   }
 
-  .row.top1{
-    border-color: rgba(255,210,90,.70);
-    box-shadow: 0 0 0 2px rgba(255,210,90,.18) inset, 0 0 20px rgba(255,210,90,.18);
-    background: linear-gradient(180deg, rgba(60,45,12,.55), rgba(18,18,35,.55));
+  /* TOP3 decorations */
+  .row.place-1{
+    border-color: rgba(255,210,90,.55);
+    box-shadow: 0 0 0 2px rgba(255,210,90,.12) inset, 0 0 18px rgba(255,210,90,.12);
   }
-  .row.top2{
-    border-color: rgba(210,220,255,.55);
-    box-shadow: 0 0 0 2px rgba(210,220,255,.16) inset, 0 0 18px rgba(210,220,255,.12);
-    background: linear-gradient(180deg, rgba(28,32,55,.60), rgba(18,18,35,.55));
+  .row.place-2{
+    border-color: rgba(220,220,255,.45);
+    box-shadow: 0 0 0 2px rgba(220,220,255,.10) inset, 0 0 16px rgba(220,220,255,.10);
   }
-  .row.top3{
-    border-color: rgba(120,210,255,.55);
-    box-shadow: 0 0 0 2px rgba(120,210,255,.16) inset, 0 0 18px rgba(120,210,255,.12);
-    background: linear-gradient(180deg, rgba(12,40,55,.55), rgba(18,18,35,.55));
+  .row.place-3{
+    border-color: rgba(120,210,255,.45);
+    box-shadow: 0 0 0 2px rgba(120,210,255,.10) inset, 0 0 16px rgba(120,210,255,.10);
   }
-
-  .row::before{
-    content:"";
-    position:absolute;
-    left:-10px;
-    top:50%;
-    transform:translateY(-50%);
-    width:18px;
-    height:60px;
-    border-radius:12px;
-    background: rgba(140,120,255,.18);
-    opacity:0;
-  }
-  .row.top1::before{ opacity:1; background: linear-gradient(#ffe88a, #ffcf4a); box-shadow:0 0 18px rgba(255,210,90,.25); }
-  .row.top2::before{ opacity:1; background: linear-gradient(#f2f4ff, #cfd6e8); box-shadow:0 0 16px rgba(210,220,255,.18); }
-  .row.top3::before{ opacity:1; background: linear-gradient(#b8f2ff, #54c8ff); box-shadow:0 0 16px rgba(120,210,255,.18); }
 
   /* RIGHT */
   .right{display:flex; flex-direction:column; gap:12px;}
@@ -224,21 +203,75 @@
     box-shadow: 0 0 0 2px rgba(20,20,50,.6) inset;
     padding:10px 14px;
     display:flex; align-items:center; justify-content:center;
-    min-height:58px;
+    min-height:66px;
   }
 
   .pill small{
     display:block; color:var(--muted);
-    font-weight:1000; letter-spacing:.7px; font-size:11px;
-    text-transform:uppercase; margin-bottom:2px; text-align:center;
+    font-weight:1000; letter-spacing:.7px; font-size:13px;
+    text-transform:uppercase; margin-bottom:3px;
   }
 
-  .recordValue{font-weight:1000; color:var(--gold); font-size:22px; letter-spacing:1px;}
-  .timerValue{font-weight:1000; color:var(--gold); font-size:34px; letter-spacing:2px;}
+  /* Neon: record & timer */
+  .trophyIcon{
+    width:42px;
+    height:42px;
+    filter:
+      drop-shadow(0 0 10px rgba(255,140,40,.35))
+      drop-shadow(0 0 22px rgba(255,210,90,.28))
+      drop-shadow(0 0 34px rgba(255,140,40,.18));
+    flex:none;
+  }
 
-  .flagsMini{display:flex; gap:8px; align-items:center; justify-content:center;}
+  .recordValue{
+    font-weight:1000;
+    color:var(--gold);
+    font-size:26px;
+    letter-spacing:1px;
+    text-shadow: 0 0 14px rgba(255,210,90,.35), 0 0 26px rgba(255,140,40,.22);
+  }
+
+  .timerValue{
+    font-weight:1000;
+    color:var(--gold);
+    font-size:40px;
+    letter-spacing:2px;
+    text-shadow: 0 0 14px rgba(255,210,90,.30), 0 0 26px rgba(255,140,40,.18);
+    transition: transform 120ms ease;
+  }
+
+  /* last minute pulse red */
+  .timerValue.danger{
+    color:#ff3b3b;
+    text-shadow: 0 0 16px rgba(255,59,59,.45), 0 0 32px rgba(255,59,59,.22);
+    animation: timerPulse 900ms ease-in-out infinite;
+  }
+  @keyframes timerPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.10)}
+  }
+
+  .x2Banner{
+    display:none;
+    margin-bottom:6px;
+    padding:8px 16px;
+    border-radius:14px;
+    background: linear-gradient(90deg,#ff9a2f,#ff6a00);
+    color:#fff;
+    font-weight:1000;
+    font-size:18px;
+    letter-spacing:1px;
+    text-shadow:0 0 12px rgba(255,140,40,.55);
+    animation:x2Blink 1s infinite;
+  }
+  @keyframes x2Blink{
+    0%,100%{opacity:1; transform:scale(1)}
+    50%{opacity:.75; transform:scale(1.06)}
+  }
+
+  .flagsMini{display:flex; gap:10px; align-items:center; justify-content:center;}
   .flagMiniImg{
-    width:22px;height:22px;border-radius:50%;
+    width:26px;height:26px;border-radius:50%;
     border:2px solid rgba(255,255,255,.18);
     box-shadow: 0 0 0 2px rgba(0,0,0,.35) inset;
     object-fit:cover;
@@ -265,12 +298,24 @@
     overflow:hidden;
   }
 
+  /* MOVING ROAD (illusion of forward motion) */
   .tracks:before{
     content:"";
-    position:absolute; inset:0;
-    background: repeating-linear-gradient(90deg, var(--gridLine) 0 2px, transparent 2px 46px);
-    opacity:.9;
+    position:absolute;
+    inset:0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,.06) 0 3px,
+        transparent 3px 80px
+      );
+    animation: roadMove 0.8s linear infinite;
+    opacity:.55;
     pointer-events:none;
+  }
+  @keyframes roadMove{
+    from{ background-position-x:0; }
+    to{ background-position-x:-80px; }
   }
 
   .tracks:after{
@@ -281,11 +326,11 @@
     pointer-events:none;
   }
 
-  /* ✅ Финиш уходит на задний план */
+  /* Finish behind flags */
   .finishWrap{
     position:absolute; right:44px; top:0; bottom:0;
     width:62px; display:flex; gap:8px; pointer-events:none;
-    z-index:1; /* было 3 */
+    z-index:2; /* behind flag */
   }
   .yellowGlow{
     width:12px;
@@ -308,7 +353,7 @@
     display:flex;
     flex-direction:column;
     gap:18px;
-    z-index:2;
+    z-index:3;
   }
 
   .lane{
@@ -332,12 +377,11 @@
     top:50%;
     transform:translateY(-50%);
     left:3%;
-    width:320px;
+    width:420px;
     height:72px;
     display:flex;
     align-items:center;
-    gap:10px;
-    z-index:5; /* ✅ всё что в carWrap — поверх финиша */
+    gap:12px;
   }
 
   .badgeM{
@@ -345,7 +389,7 @@
     top:-20px;
     left:8px;
     background: rgba(0,0,0,.80);
-    border:2px solid rgba(255,210,90,.65);
+    border:2px solid rgba(255,140,40,.70);
     color:#fff;
     font-weight:1000;
     font-size:12px;
@@ -407,18 +451,18 @@
     100%{transform:translateX(0)}
   }
 
-  /* ✅ Ярлык страны (флаг + название) точно поверх финиша */
-  .nameTag{
+  /* AFTER CAR FLAG (only flag, no name) */
+  .flagAfterCar{
+    width:72px;
+    height:72px;
+    border-radius:20px;
+    border:3px solid rgba(255,255,255,.25);
+    object-fit:cover;
     position:relative;
-    z-index:6;
-    display:flex; align-items:center; gap:8px;
-    padding:10px 10px;
-    border-radius:16px;
-    border:2px solid rgba(140,120,255,.25);
-    background: rgba(0,0,0,.22);
-    font-weight:1000;
-    white-space:nowrap;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.35) inset, 0 10px 20px rgba(0,0,0,.28);
+    z-index:10; /* above finish */
+    box-shadow:
+      0 12px 28px rgba(0,0,0,.55),
+      0 0 28px rgba(255,210,90,.18);
   }
 
   .crown{
@@ -432,6 +476,7 @@
   }
   .lane.leader .crown{display:block;}
 
+  /* Bottom buttons */
   .bottomBar{
     margin:0 18px 16px 18px;
     height:64px;
@@ -446,7 +491,6 @@
     background: rgba(6,6,22,.55);
     backdrop-filter: blur(6px);
     border:2px solid rgba(140,120,255,.22);
-    z-index:10;
   }
   .btnRow{display:flex; gap:12px; align-items:center}
   .btn{
@@ -464,6 +508,7 @@
   .btn:active{transform:translateY(1px)}
   .btn.small{height:36px;border-radius:12px;padding:0 12px}
 
+  /* MODALS */
   .modal{
     position:fixed;
     inset:0;
@@ -525,6 +570,7 @@
   .hint{color:var(--muted); font-size:12px; margin-top:10px; line-height:1.35}
   .modalActions{display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:12px;}
 
+  /* WIN OVERLAY */
   .winOverlay{
     position:fixed;
     inset:0;
@@ -609,33 +655,42 @@
       <!-- RIGHT -->
       <main class="right">
         <div class="topbar">
+
+          <!-- RECORD -->
           <div class="pill">
             <div style="display:flex; align-items:center; gap:10px;">
               <svg class="trophyIcon" viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#ffcf4a" d="M19 4h-3V3H8v1H5a1 1 0 0 0-1 1v2a5 5 0 0 0 4 4.9A6.02 6.02 0 0 0 11 15.8V18H8v2h8v-2h-3v-2.2a6.02 6.02 0 0 0 3-3.9A5 5 0 0 0 20 7V5a1 1 0 0 0-1-1ZM6 7V6h2v4.8A3 3 0 0 1 6 7Zm12 0a3 3 0 0 1-2 3.8V6h2v1Z"/>
               </svg>
+
               <div style="text-align:left;">
-                <small>РЕКОРД</small>
-                <div class="recordValue" id="record">0</div>
+                <small style="font-size:14px;">РЕКОРД</small>
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <img id="recordFlag" class="flagMiniImg" alt="flag" style="width:30px;height:30px;border-radius:12px;">
+                  <div class="recordValue" id="record">0</div>
+                </div>
                 <div style="color:var(--muted); font-weight:1000; font-size:12px;" id="recordCountry">НЕТ</div>
               </div>
             </div>
           </div>
 
+          <!-- TIMER -->
           <div class="pill">
             <div style="text-align:center;">
-              <small>TIMER</small>
+              <small style="font-size:14px;">ТАЙМЕР</small>
+              <div id="x2banner" class="x2Banner">X2 ОЧКИ</div>
               <div class="timerValue" id="timer">10:00</div>
-              <div id="x2hint" style="display:none;color:var(--gold);font-weight:1000;font-size:12px;letter-spacing:.6px;">x2 В ПОСЛЕДНЮЮ МИНУТУ</div>
             </div>
           </div>
 
+          <!-- ROULETTE -->
           <div class="pill">
             <div style="text-align:center;">
               <small>РУЛЕТКА</small>
               <div class="flagsMini" id="miniFlags"></div>
             </div>
           </div>
+
         </div>
 
         <section class="field">
@@ -656,6 +711,7 @@
           </div>
         </section>
       </main>
+
     </div>
   </div>
 </div>
@@ -764,7 +820,7 @@
       <div style="color:var(--muted); font-weight:1000; font-size:12px; margin-bottom:8px;">Список правил URL</div>
       <div id="rulesList"></div>
       <div class="hint">
-        Ссылки идут через <b>#</b>: <b>#c=ru&amp;m=5</b> — чаще работает в сторонних программах.
+        Ссылки идут через <b>#</b>: <b>#c=ru&amp;m=5</b>.
       </div>
     </div>
 
@@ -794,10 +850,7 @@
         <button class="btn" id="bindCreate">ДОБАВИТЬ БИНД</button>
       </div>
 
-      <div class="hint">
-        Бинды не срабатывают, когда ты печатаешь в поле ввода.
-      </div>
-
+      <div class="hint">Бинды не срабатывают, когда ты печатаешь в поле ввода.</div>
       <div id="bindsList" style="margin-top:10px;"></div>
     </div>
 
@@ -864,6 +917,9 @@
 </div>
 
 <script>
+  // =============================
+  // Storage keys
+  // =============================
   const LS_STATE     = "race_state_v9";
   const LS_RULES     = "race_rules_v9";
   const LS_CFG       = "race_cfg_v6";
@@ -878,6 +934,9 @@
   }
   function saveJSON(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
 
+  // =============================
+  // Default countries
+  // =============================
   const DEFAULT_COUNTRIES = [
     { name:"Беларусь", code:"by", color:"#ff3b3b" },
     { name:"Россия",   code:"ru", color:"#3b82ff" },
@@ -925,8 +984,11 @@
   }
   rebuildMaps();
 
-  const flagUrl = (code)=>`https://flagcdn.com/w40/${code}.png`;
+  const flagUrl = (code)=>`https://flagcdn.com/w80/${code}.png`;
 
+  // =============================
+  // Cars
+  // =============================
   function carSVG(color){
     const svg =
 `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 90">
@@ -951,10 +1013,16 @@
   }
   let CAR_SRC = buildCarSrc();
 
+  // =============================
+  // Config
+  // =============================
   const cfgDefault = { soundEnabled:true, volume:0.6, turboThreshold:50 };
   let cfg = { ...cfgDefault, ...loadJSON(LS_CFG, {}) };
   function saveCfg(){ saveJSON(LS_CFG, cfg); }
 
+  // =============================
+  // Audio
+  // =============================
   class AudioMgr{
     constructor(){ this.ctx = null; }
     ensureCtx(){
@@ -1002,6 +1070,9 @@
   const audioMgr = new AudioMgr();
   document.addEventListener("pointerdown", ()=> audioMgr.ensureCtx(), {once:true});
 
+  // =============================
+  // Cross-tab auto-update
+  // =============================
   const bc = ("BroadcastChannel" in window) ? new BroadcastChannel("race_channel_v6") : null;
 
   function broadcastState(){
@@ -1058,6 +1129,9 @@
     }
   });
 
+  // =============================
+  // State
+  // =============================
   let state = {
     countries: COUNTRIES.map(c=>({ name:c.name, meters:0, wins:0 })),
     record: 0,
@@ -1133,13 +1207,18 @@
     if(doBroadcast) broadcastState();
   }
 
+  // =============================
+  // UI refs
+  // =============================
   const lanesEl = document.getElementById("lanes");
   const tableBody = document.getElementById("tableBody");
   const recordEl = document.getElementById("record");
   const recordCountryEl = document.getElementById("recordCountry");
+  const recordFlagEl = document.getElementById("recordFlag");
   const lastWinnerEl = document.getElementById("lastWinner");
   const timerEl = document.getElementById("timer");
-  const x2hintEl = document.getElementById("x2hint");
+  const x2bannerEl = document.getElementById("x2banner");
+
   const miniFlagsEl = document.getElementById("miniFlags");
 
   const selCountryRule = document.getElementById("country");
@@ -1154,6 +1233,9 @@
   const newFlagPreviewEl = document.getElementById("newFlagPreview");
   const countriesListEl = document.getElementById("countriesList");
 
+  // =============================
+  // Mini flags
+  // =============================
   function renderMiniFlags(){
     miniFlagsEl.innerHTML = "";
     COUNTRIES.forEach(c=>{
@@ -1165,6 +1247,9 @@
     });
   }
 
+  // =============================
+  // Table
+  // =============================
   function renderTable(){
     const list = [...state.countries].sort((a,b)=>{
       if(b.wins !== a.wins) return b.wins - a.wins;
@@ -1175,14 +1260,10 @@
     list.forEach((item, idx)=>{
       const code = window.NAME_TO_CODE[item.name];
       const row = document.createElement("div");
-      row.className = "row";
-      if(idx === 0) row.classList.add("top1");
-      if(idx === 1) row.classList.add("top2");
-      if(idx === 2) row.classList.add("top3");
-
+      row.className = "row " + (idx===0 ? "place-1" : idx===1 ? "place-2" : idx===2 ? "place-3" : "");
       row.innerHTML = `
         <div class="country">
-          <img class="flagImg" alt="${code}" src="${flagUrl(code)}">
+          <img class="flagImg big" alt="${code}" src="${flagUrl(code)}">
         </div>
         <div class="wins">${item.wins}</div>
       `;
@@ -1190,11 +1271,13 @@
     });
   }
 
+  // =============================
+  // SMART PROGRESS -> position
+  // =============================
   function metersToProgress01(meters){
     const vals = state.countries.map(x=>x.meters);
     const max = Math.max(...vals);
     const min = Math.min(...vals);
-
     if(!Number.isFinite(max) || max === min) return 0.50;
 
     const range = max - min;
@@ -1202,10 +1285,16 @@
     const isClosePack = rel <= 0.25;
     const t = (meters - min) / range;
 
-    if(isClosePack) return 0.35 + t * 0.30;
-    return 0.08 + t * 0.84;
+    if(isClosePack){
+      return 0.35 + t * 0.30; // 0.35..0.65
+    }else{
+      return 0.08 + t * 0.84; // 0.08..0.92
+    }
   }
 
+  // =============================
+  // Lanes
+  // =============================
   function crownSvg(){
     return `
     <svg class="crown" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -1228,10 +1317,7 @@
           <div class="carHalo"></div>
           <div class="badgeM">${st.meters} M</div>
           <img class="carImg" src="${CAR_SRC[c.name] || carSVG(c.color || "#8c78ff")}" alt="car">
-          <div class="nameTag">
-            <img class="flagImg" alt="${c.code}" src="${flagUrl(c.code)}">
-            <span>${c.name}</span>
-          </div>
+          <img class="flagAfterCar" alt="${c.code}" src="${flagUrl(c.code)}">
         </div>
       `;
       lanesEl.appendChild(lane);
@@ -1244,21 +1330,20 @@
   function updateCars(pop=true){
     COUNTRIES.forEach(c=>{
       const st = state.countries.find(x=>x.name===c.name);
-      const wrap = lanesEl.querySelector(`.carWrap[data-name="${CSS.escape(c.name)}"]`);
+      const wrap = lanesEl.querySelector(\`.carWrap[data-name="\${CSS.escape(c.name)}"]\`);
       if(!wrap || !st) return;
 
       const p01 = metersToProgress01(st.meters);
-      const left = 3 + p01 * 72;
+      const left = 3 + p01 * 72; // 3%..75%
 
       const last = wrap.__lastMeters ?? st.meters;
       const delta = Math.abs(st.meters - last);
-
       const dur = Math.max(260, Math.min(900, 260 + delta * 2));
-      wrap.style.transition = `left ${dur}ms cubic-bezier(.2,.9,.2,1)`;
+      wrap.style.transition = \`left \${dur}ms cubic-bezier(.2,.9,.2,1)\`;
       wrap.style.left = left + "%";
 
       const badge = wrap.querySelector(".badgeM");
-      badge.textContent = `${st.meters} M`;
+      badge.textContent = \`\${st.meters} M\`;
 
       if(pop){
         badge.classList.remove("pop");
@@ -1278,26 +1363,43 @@
   }
 
   function addTurboFx(name){
-    const wrap = lanesEl.querySelector(`.carWrap[data-name="${CSS.escape(name)}"]`);
+    const wrap = lanesEl.querySelector(\`.carWrap[data-name="\${CSS.escape(name)}"]\`);
     if(!wrap) return;
     wrap.classList.add("turbo");
     setTimeout(()=>wrap.classList.remove("turbo"), 650);
   }
 
+  // =============================
+  // Header + Timer
+  // =============================
   function renderHeader(){
     recordEl.textContent = String(state.record);
     recordCountryEl.textContent = state.recordCountry || "НЕТ";
     lastWinnerEl.textContent = state.lastWinner;
+
+    if(state.recordCountry && state.recordCountry !== "НЕТ"){
+      const code = window.NAME_TO_CODE[state.recordCountry];
+      recordFlagEl.src = code ? flagUrl(code) : "";
+      recordFlagEl.style.opacity = "1";
+    }else{
+      recordFlagEl.src = "";
+      recordFlagEl.style.opacity = "0.4";
+    }
   }
 
   function renderTimer(){
     const mm = String(Math.floor(state.timeLeft/60)).padStart(2,"0");
     const ss = String(state.timeLeft%60).padStart(2,"0");
-    timerEl.textContent = `${mm}:${ss}`;
-    const isX2 = (state.timeLeft > 0 && state.timeLeft <= 60);
-    x2hintEl.style.display = isX2 ? "block" : "none";
+    timerEl.textContent = \`\${mm}:\${ss}\`;
+
+    const isLastMinute = (state.timeLeft > 0 && state.timeLeft <= 60);
+    x2bannerEl.style.display = isLastMinute ? "inline-block" : "none";
+    timerEl.classList.toggle("danger", isLastMinute);
   }
 
+  // =============================
+  // Win overlay
+  // =============================
   const winOverlay = document.getElementById("winOverlay");
   const winCountry = document.getElementById("winCountry");
   const winFlag = document.getElementById("winFlag");
@@ -1327,6 +1429,9 @@
     showWinOverlay(winner.name);
   }
 
+  // =============================
+  // URL rules
+  // =============================
   function baseUrl(){
     const u = new URL(window.location.href);
     u.search = ""; u.hash = "";
@@ -1339,10 +1444,13 @@
   function makeBoostUrl(countryName, add){
     const code = window.NAME_TO_CODE[countryName];
     const u = new URL(baseUrl());
-    u.hash = `c=${encodeURIComponent(code)}&m=${encodeURIComponent(String(add))}`;
+    u.hash = \`c=\${encodeURIComponent(code)}&m=\${encodeURIComponent(String(add))}\`;
     return u.toString();
   }
 
+  // =============================
+  // Boost apply + x2 last minute
+  // =============================
   function applyBoostInternal(country, add, fromRemote=false){
     const st = state.countries.find(x=>x.name===country);
     if(!st) return false;
@@ -1398,6 +1506,9 @@
     applyBoostInternal(country, m, false);
   }
 
+  // =============================
+  // Modals
+  // =============================
   const menuModal = document.getElementById("menuModal");
   const settingsModal = document.getElementById("settingsModal");
 
@@ -1425,15 +1536,18 @@
     }
   });
 
+  // =============================
+  // Menu UI
+  // =============================
   const winsEditor = document.getElementById("winsEditor");
 
   function secToText(sec){
     const mm = String(Math.floor(sec/60)).padStart(2,"0");
     const ss = String(sec%60).padStart(2,"0");
-    return `${mm}:${ss}`;
+    return \`\${mm}:\${ss}\`;
   }
   function textToSec(txt){
-    const m = String(txt||"").trim().match(/^(\d{1,3}):(\d{2})$/);
+    const m = String(txt||"").trim().match(/^(\\d{1,3}):(\\d{2})$/);
     if(!m) return null;
     const mm = parseInt(m[1],10);
     const ss = parseInt(m[2],10);
@@ -1549,10 +1663,13 @@
     closeModal(menuModal);
   };
 
+  // =============================
+  // Settings UI (rules)
+  // =============================
   const rulesList = document.getElementById("rulesList");
 
   function renderRules(){
-    const rules = loadJSON(LS_RULES, []);
+    const rules = loadRules();
     rulesList.innerHTML = "";
     if(rules.length === 0){
       rulesList.innerHTML = `<div style="color:var(--muted);font-weight:900;">Правил пока нет.</div>`;
@@ -1591,7 +1708,7 @@
     rulesList.querySelectorAll("[data-del]").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const id = Number(btn.getAttribute("data-del"));
-        saveJSON(LS_RULES, loadJSON(LS_RULES, []).filter(x=>x.createdAt !== id));
+        saveRules(loadRules().filter(x=>x.createdAt !== id));
         renderRules();
       });
     });
@@ -1603,12 +1720,15 @@
     if(!country || country === "НЕТ"){ alert("Выбери страну"); return; }
     if(add === 0){ alert("Введите +метры"); return; }
 
-    const rules = loadJSON(LS_RULES, []);
+    const rules = loadRules();
     rules.unshift({ country, add, createdAt: Date.now() });
-    saveJSON(LS_RULES, rules);
+    saveRules(rules);
     renderRules();
   };
 
+  // =============================
+  // Keybinds
+  // =============================
   const bindsListEl = document.getElementById("bindsList");
   const bindKeyCodeEl = document.getElementById("bindKeyCode");
   let capturingKey = false;
@@ -1717,6 +1837,9 @@
     applyBoostInternal(b.country, Number(b.add)||0, false);
   });
 
+  // =============================
+  // Countries manager UI
+  // =============================
   function refreshAllCountryUI(){
     fillSelectWithCountries(selCountryRule, false);
     fillSelectWithCountries(selBindCountry, false);
@@ -1857,6 +1980,9 @@
     updateNewFlagPreview();
   };
 
+  // =============================
+  // Settings open
+  // =============================
   document.getElementById("btnSettings").onclick = ()=>{
     openModal(settingsModal);
     refreshAllCountryUI();
@@ -1869,6 +1995,9 @@
     cancelKeyCapture();
   };
 
+  // =============================
+  // Other buttons
+  // =============================
   document.getElementById("btnSound").onclick = ()=>{
     cfg.soundEnabled = !cfg.soundEnabled;
     saveCfg();
@@ -1885,6 +2014,9 @@
     saveState(true);
   };
 
+  // =============================
+  // Render all
+  // =============================
   function renderAll(){
     renderHeader();
     renderTimer();
@@ -1893,30 +2025,9 @@
     updateLeaderHighlight();
   }
 
-  function applyBoostFromUrl(){
-    const qs = new URLSearchParams(window.location.search);
-    let c = (qs.get("c") || "").toLowerCase().trim();
-    let m = parseInt(qs.get("m"), 10);
-
-    if(!c || !Number.isFinite(m)){
-      const hash = (window.location.hash || "").replace(/^#/, "");
-      const hs = new URLSearchParams(hash);
-      c = (hs.get("c") || "").toLowerCase().trim();
-      m = parseInt(hs.get("m"), 10);
-    }
-
-    if(!c || !Number.isFinite(m) || m === 0) return;
-
-    const country = window.CODE_TO_COUNTRY[c];
-    history.replaceState({}, "", baseUrl());
-
-    if(!country){
-      alert("Неизвестная страна в ссылке (код).");
-      return;
-    }
-    applyBoostInternal(country, m, false);
-  }
-
+  // =============================
+  // Timer loop
+  // =============================
   setInterval(()=>{
     if(!state.running) return;
     if(state.timeLeft <= 0) return;
@@ -1932,6 +2043,9 @@
     }
   }, 1000);
 
+  // =============================
+  // Init
+  // =============================
   function init(){
     renderMiniFlags();
     refreshAllCountryUI();
@@ -1944,6 +2058,7 @@
   }
   init();
 
+  // backup auto-update
   let lastSnapshot = localStorage.getItem(LS_STATE) || "";
   setInterval(()=>{
     const s = localStorage.getItem(LS_STATE) || "";
@@ -1955,10 +2070,6 @@
       renderLanes();
     }
   }, 2000);
-
-  /* --- недостающие объявления из старой версии (чтобы всё работало) --- */
-  function loadRules(){ return loadJSON(LS_RULES, []); }
-  function saveRules(r){ saveJSON(LS_RULES, r); }
 </script>
 </body>
 </html>
